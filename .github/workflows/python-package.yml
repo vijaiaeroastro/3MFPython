@@ -1,32 +1,59 @@
-name: Build Python Wheels
+name: Build and Test Wheel
 
 on: [push, pull_request]
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_name: ${{ steps.set_wheel_name.outputs.wheel_name }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Build wheel
+      run: |
+      pip install -r requirements.txt 
+      python setup.py bdist_wheel
+
+    - name: Get wheel name
+      id: set_wheel_name
+      run: echo "::set-output name=wheel_name::$(ls dist/*.whl)"
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: wheel-artifact
+        path: dist/*.whl
+
+  test:
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+    - uses: actions/checkout@v2
 
-    - name: Install dependencies
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Download wheel
+      uses: actions/download-artifact@v2
+      with:
+        name: wheel-artifact
+
+    - name: Install wheel
+      run: pip install dist/${{ needs.build.outputs.wheel_name }}
+
+    - name: Run tests
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Build wheel
-      run: python setup.py bdist_wheel
-
-    - name: Upload wheel
-      uses: actions/upload-artifact@v3
-      with:
-        name: wheel-${{ matrix.os }}-py${{ matrix.python-version }}
-        path: dist/*.whl
+        # Replace this with your test script
+        python test_lib3mf.py
