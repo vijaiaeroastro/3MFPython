@@ -24,6 +24,7 @@ def buildTriangle(mesh):
 	mesh.AddTriangle(triangle)
 
 def main():
+	# Get the wrapper
 	wrapper = get_wrapper()
 	
 	major, minor, micro = wrapper.GetLibraryVersion()

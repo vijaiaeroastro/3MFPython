@@ -33,21 +33,30 @@ sys.path.append(dir_path)
 # Ensure that your Lib3MF.py wraps around the shared library correctly
 from .Lib3MF import *  # Import necessary classes/functions from your Lib3MF.py
 
+# Returns the raw library path
+def get_library_path():
+    global lib_path
+    return lib_path
+
+# For existing codes that use Wrapper class directly
+def get_library_path_for_wrapper():
+    global lib_path
+    if system == "linux":
+        if str(lib_path).endswith(".so"):
+            return lib_path[:-3]
+    if system == "windows":
+        if str(lib_path).endswith(".dll"):
+            return lib_path[:-4]
+    if system == "darwin":
+        if str(lib_path).endswith(".dylib"):
+            return lib_path[-6]
+
 # Your existing logic to use the library
 def get_wrapper():
     global lib_path
     try:
         # No need to modify lib_path here; just use it directly in your wrapper
-        if system == "linux":
-            if str(lib_path).endswith(".so"):
-                return Wrapper(lib_path[:-3])
-        if system == "windows":
-            if str(lib_path).endswith(".dll"):
-                return Wrapper(lib_path[:-4])
-        if system == "darwin":
-            if str(lib_path).endswith(".dylib"):
-                return Wrapper(lib_path[-6])
+        return Wrapper(get_library_path_for_wrapper())
     except ELib3MFException as e:
         print("Failed to initialize the Lib3MF wrapper: ", e)
         raise
-
