@@ -54,7 +54,7 @@ jobs:
       run: ls -al
 
     - name: Install wheel
-      run: pip install ${{ needs.build.outputs.wheel_name }}
+      run: pip install *.whl
 
     - name: Run tests
       run: |
