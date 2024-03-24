@@ -1,0 +1,6 @@
+*.3mf
+*.pyc
+lib3mfPy/build
+lib3mfPy/dist
+lib3mfPy/Lib3MF.egg-info
+lib3mfPy/Lib3MF/__pycache__

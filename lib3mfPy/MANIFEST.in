@@ -1,0 +1,3 @@
+include Lib3MF/lib3mf.so
+include Lib3MF/lib3mf.dylib
+include Lib3MF/lib3mf.dll
