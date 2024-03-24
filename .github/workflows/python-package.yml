@@ -54,7 +54,7 @@ jobs:
       run: ls 
 
     - name: Install wheel
-      run: pip install *.whl
+      run: pip install Lib3MF-2.3.0-py3-none-any.whl
 
     - name: Run tests
       run: |
