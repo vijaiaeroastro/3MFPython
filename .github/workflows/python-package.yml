@@ -50,6 +50,9 @@ jobs:
       with:
         name: wheel-artifact
 
+    - name: List artifacts (for testing)
+      run: ls -al
+
     - name: Install wheel
       run: pip install dist/${{ needs.build.outputs.wheel_name }}
 
