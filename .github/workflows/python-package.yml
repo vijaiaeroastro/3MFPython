@@ -51,7 +51,7 @@ jobs:
         name: wheel-artifact
 
     - name: List artifacts (for testing)
-      run: ls -al
+      run: ls 
 
     - name: Install wheel
       run: pip install *.whl
