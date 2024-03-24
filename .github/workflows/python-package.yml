@@ -18,8 +18,8 @@ jobs:
 
     - name: Build wheel
       run: |
-      pip install -r requirements.txt 
-      python setup.py bdist_wheel
+        pip install -r requirements.txt 
+        python setup.py bdist_wheel
 
     - name: Get wheel name
       id: set_wheel_name
